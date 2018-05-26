@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package video_search;
+
+import "github.com/agxp/cloudflix/video-hosting-svc/proto/host.proto";
+
+service Search {
+    rpc Search(Request) returns (SearchResponse) {}
+}
+
+message Request {
+    string query = 1;
+    uint64 page = 2;
+}
+
+message SearchResponse {
+	repeated video_host.GetVideoInfoResponse data = 1;
+}
