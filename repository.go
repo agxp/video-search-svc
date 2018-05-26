@@ -21,10 +21,10 @@ type SearchRepository struct {
 }
 
 func (repo *SearchRepository) Search(parent opentracing.SpanContext, query string, page uint64) ([]*video_host.GetVideoInfoResponse, error) {
-	sp, _ := opentracing.StartSpanFromContext(context.Background(), "Search_Repo", opentracing.ChildOf(parent))
+	sp, _ := opentracing.StartSpanFromContext(context.TODO(), "Search_Repo", opentracing.ChildOf(parent))
 	defer sp.Finish()
 
-	dbSP, _ := opentracing.StartSpanFromContext(context.Background(), "PG_Search", opentracing.ChildOf(sp.Context()))
+	dbSP, _ := opentracing.StartSpanFromContext(context.TODO(), "PG_Search", opentracing.ChildOf(sp.Context()))
 	defer dbSP.Finish()
 
 	getSearchQuery := `select id from videos where uploaded=true and title like $1 or description like $1 limit 20 offset $2`
@@ -56,7 +56,7 @@ func (repo *SearchRepository) Search(parent opentracing.SpanContext, query strin
 	var data []*video_host.GetVideoInfoResponse
 
 	for _, v := range ids {
-		res, err := repo.vh.GetVideoInfo(context.Background(), &video_host.GetVideoInfoRequest{
+		res, err := repo.vh.GetVideoInfo(context.TODO(), &video_host.GetVideoInfoRequest{
 			Id: v,
 		})
 
